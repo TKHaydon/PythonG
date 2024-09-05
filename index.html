@@ -26,6 +26,7 @@
             <!-- Rows will be populated dynamically -->
         </tbody>
     </table>
+    <button id="save-button">Save Changes</button>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
         import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
@@ -81,13 +82,19 @@
                 }
                 updates[`row${i}`] = rowData;
             }
-            set(tableRef, updates);
+            console.log('Data to be saved:', updates); // Debugging line
+            set(tableRef, updates)
+                .then(() => console.log('Data saved to Firebase'))
+                .catch((error) => console.error('Error saving data:', error));
         }
 
         // Load initial data
         loadTableData();
 
-        // Save data when table is modified
+        // Save data when the Save Changes button is clicked
+        document.getElementById('save-button').addEventListener('click', saveTableData);
+
+        // Optionally, save data when table content is edited
         document.getElementById('table-body').addEventListener('blur', saveTableData, true);
     </script>
 </body>

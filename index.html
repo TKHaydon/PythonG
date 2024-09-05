@@ -80,19 +80,23 @@
             };
 
             // Save the new row data to Firebase
-            database.ref(`tableData/${newRowId}`).set(newRowData);
+            database.ref(`tableData/${newRowId}`).set(newRowData)
+                .then(() => {
+                    // Add the new row to the table
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-id', newRowId); // Set a data attribute for the row ID
 
-            // Add the new row to the table
-            const tr = document.createElement('tr');
-            tr.setAttribute('data-id', newRowId); // Set a data attribute for the row ID
-
-            Object.values(newRowData).forEach(value => {
-                const td = document.createElement('td');
-                td.contentEditable = true;
-                td.textContent = value;
-                tr.appendChild(td);
-            });
-            table.appendChild(tr);
+                    Object.values(newRowData).forEach(value => {
+                        const td = document.createElement('td');
+                        td.contentEditable = true;
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                })
+                .catch(error => {
+                    console.error('Error adding new row:', error);
+                });
         }
 
         // Event listener for saving data on blur
@@ -113,7 +117,10 @@
                         followUpAction: cells[5].textContent
                     };
 
-                    database.ref(`tableData/${rowId}`).update(updatedData);
+                    database.ref(`tableData/${rowId}`).update(updatedData)
+                        .catch(error => {
+                            console.error('Error updating row:', error);
+                        });
                 }
             }
         }, true);

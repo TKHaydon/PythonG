@@ -66,6 +66,16 @@
                         });
                         tableBody.appendChild(newRow);
                     });
+                } else {
+                    // Add a default row if no data is present
+                    const newRow = document.createElement('tr');
+                    for (let i = 0; i < 6; i++) {
+                        const cell = document.createElement('td');
+                        cell.textContent = 'Enter data here';
+                        cell.contentEditable = 'true';
+                        newRow.appendChild(cell);
+                    }
+                    tableBody.appendChild(newRow);
                 }
             });
         }
@@ -93,9 +103,6 @@
 
         // Save data when the Save Changes button is clicked
         document.getElementById('save-button').addEventListener('click', saveTableData);
-
-        // Optionally, save data when table content is edited
-        document.getElementById('table-body').addEventListener('blur', saveTableData, true);
     </script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style1.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,8 +17,8 @@
                 <th style="width: 15%" scope="col">Test Data</th>
                 <th style="width: 25%" scope="col">Expected Result</th>
                 <th style="width: 25%" scope="col">Actual Result</th>
-                <th style="width: 10%" scope="col">Pass</th>
-                <th style="width: 10%" scope="col">Follow-up Action</th> 
+                <th style="width: 5%" scope="col">Pass</th>
+                <th style="width: 15%" scope="col">Follow-up Action</th> 
         </thead>
         <tbody>
             <tr>
@@ -36,6 +39,63 @@
             </tr>
         </tbody>
     </table>
+    <script>
+        // Your Firebase configuration object
+        const firebaseConfig = {
+  apiKey: "AIzaSyAMo6sJ1cSccouQ0vgCR-EOpck3fQPLkc8",
+  authDomain: "the-abandoned-test-table.firebaseapp.com",
+  databaseURL: "https://the-abandoned-test-table-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "the-abandoned-test-table",
+  storageBucket: "the-abandoned-test-table.appspot.com",
+  messagingSenderId: "616618224310",
+  appId: "1:616618224310:web:db548358ceab1f2b085417"
+};
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+    </script>
+<script>
+    function fetchData() {
+      const table = document.getElementById('testingtable').getElementsByTagName('tbody')[0];
+      database.ref('tableData').once('value').then(snapshot => {
+        table.innerHTML = '';
+        snapshot.forEach(childSnapshot => {
+          const row = childSnapshot.val();
+          const tr = document.createElement('tr');
+          Object.values(row).forEach(value => {
+            const td = document.createElement('td');
+            td.contentEditable = true;
+            td.textContent = value;
+            tr.appendChild(td);
+          });
+          table.appendChild(tr);
+        });
+      });
+    }
+  
+    fetchData();
+  </script>
+  <script>
+    document.getElementById('testingtable').addEventListener('blur', (event) => {
+      const td = event.target;
+      if (td.tagName === 'TD') {
+        const rowId = 'replace-with-row-id'; // Implement a way to track row IDs
+  
+        const cells = td.parentNode.getElementsByTagName('td');
+        const updatedData = {
+          action: cells[0].textContent,
+          testData: cells[1].textContent,
+          expectedResult: cells[2].textContent,
+          actualResult: cells[3].textContent,
+          pass: cells[4].textContent,
+          followUpAction: cells[5].textContent
+        };
+  
+        database.ref(`tableData/${rowId}`).update(updatedData);
+      }
+    }, true);
+  </script>
+  
     
 </body>
 </html>

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js"></script>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style1.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,83 +19,104 @@
                 <th style="width: 25%" scope="col">Actual Result</th>
                 <th style="width: 5%" scope="col">Pass</th>
                 <th style="width: 15%" scope="col">Follow-up Action</th> 
+            </tr>
         </thead>
         <tbody>
-            <tr>
-                <td contenteditable="true">Describe the action here</td>
-                <td contenteditable="true">Enter the test data here</td>
-                <td contenteditable="true">Describe the expected result here</td>
-                <td contenteditable="true">Enter the actual result here</td>
-                <td contenteditable="true">Yes/No</td>
-                <td contenteditable="true">Describe follow-up action here</td>
-            </tr>
-            <tr>
-                <td contenteditable="true">Describe the action here</td>
-                <td contenteditable="true">Enter the test data here</td>
-                <td contenteditable="true">Describe the expected result here</td>
-                <td contenteditable="true">Enter the actual result here</td>
-                <td contenteditable="true">Yes/No</td>
-                <td contenteditable="true">Describe follow-up action here</td>
-            </tr>
+            <!-- Rows will be dynamically added here -->
         </tbody>
     </table>
+    <button onclick="addNewRow()">Add New Row</button> <!-- Button to add new rows -->
+
     <script>
-        // Your Firebase configuration object
+        // Firebase configuration
         const firebaseConfig = {
-  apiKey: "AIzaSyAMo6sJ1cSccouQ0vgCR-EOpck3fQPLkc8",
-  authDomain: "the-abandoned-test-table.firebaseapp.com",
-  databaseURL: "https://the-abandoned-test-table-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "the-abandoned-test-table",
-  storageBucket: "the-abandoned-test-table.appspot.com",
-  messagingSenderId: "616618224310",
-  appId: "1:616618224310:web:db548358ceab1f2b085417"
-};
+            apiKey: "AIzaSyAMo6sJ1cSccouQ0vgCR-EOpck3fQPLkc8",
+            authDomain: "the-abandoned-test-table.firebaseapp.com",
+            databaseURL: "https://the-abandoned-test-table-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "the-abandoned-test-table",
+            storageBucket: "the-abandoned-test-table.appspot.com",
+            messagingSenderId: "616618224310",
+            appId: "1:616618224310:web:db548358ceab1f2b085417"
+        };
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
+
+        // Function to fetch data from Firebase
+        function fetchData() {
+            const table = document.getElementById('testingtable').getElementsByTagName('tbody')[0];
+            database.ref('tableData').once('value').then(snapshot => {
+                table.innerHTML = '';
+                snapshot.forEach(childSnapshot => {
+                    const rowId = childSnapshot.key; // Get the unique key for the row
+                    const row = childSnapshot.val();
+                    const tr = document.createElement('tr');
+                    tr.setAttribute('data-id', rowId); // Set a data attribute for the row ID
+                    
+                    Object.values(row).forEach(value => {
+                        const td = document.createElement('td');
+                        td.contentEditable = true;
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+                    table.appendChild(tr);
+                });
+            });
+        }
+
+        fetchData();
+
+        // Function to add a new row
+        function addNewRow() {
+            const table = document.getElementById('testingtable').getElementsByTagName('tbody')[0];
+            const newRowId = database.ref().child('tableData').push().key; // Generate a new unique key
+            const newRowData = {
+                action: "Describe the action here",
+                testData: "Enter the test data here",
+                expectedResult: "Describe the expected result here",
+                actualResult: "Enter the actual result here",
+                pass: "Yes/No",
+                followUpAction: "Describe follow-up action here"
+            };
+
+            // Save the new row data to Firebase
+            database.ref(`tableData/${newRowId}`).set(newRowData);
+
+            // Add the new row to the table
+            const tr = document.createElement('tr');
+            tr.setAttribute('data-id', newRowId); // Set a data attribute for the row ID
+
+            Object.values(newRowData).forEach(value => {
+                const td = document.createElement('td');
+                td.contentEditable = true;
+                td.textContent = value;
+                tr.appendChild(td);
+            });
+            table.appendChild(tr);
+        }
+
+        // Event listener for saving data on blur
+        document.getElementById('testingtable').addEventListener('blur', (event) => {
+            const td = event.target;
+            if (td.tagName === 'TD') {
+                const tr = td.parentNode;
+                const rowId = tr.getAttribute('data-id'); // Get the row ID from the data attribute
+
+                if (rowId) {
+                    const cells = tr.getElementsByTagName('td');
+                    const updatedData = {
+                        action: cells[0].textContent,
+                        testData: cells[1].textContent,
+                        expectedResult: cells[2].textContent,
+                        actualResult: cells[3].textContent,
+                        pass: cells[4].textContent,
+                        followUpAction: cells[5].textContent
+                    };
+
+                    database.ref(`tableData/${rowId}`).update(updatedData);
+                }
+            }
+        }, true);
     </script>
-<script>
-    function fetchData() {
-      const table = document.getElementById('testingtable').getElementsByTagName('tbody')[0];
-      database.ref('tableData').once('value').then(snapshot => {
-        table.innerHTML = '';
-        snapshot.forEach(childSnapshot => {
-          const row = childSnapshot.val();
-          const tr = document.createElement('tr');
-          Object.values(row).forEach(value => {
-            const td = document.createElement('td');
-            td.contentEditable = true;
-            td.textContent = value;
-            tr.appendChild(td);
-          });
-          table.appendChild(tr);
-        });
-      });
-    }
-  
-    fetchData();
-  </script>
-  <script>
-    document.getElementById('testingtable').addEventListener('blur', (event) => {
-      const td = event.target;
-      if (td.tagName === 'TD') {
-        const rowId = 'replace-with-row-id'; // Implement a way to track row IDs
-  
-        const cells = td.parentNode.getElementsByTagName('td');
-        const updatedData = {
-          action: cells[0].textContent,
-          testData: cells[1].textContent,
-          expectedResult: cells[2].textContent,
-          actualResult: cells[3].textContent,
-          pass: cells[4].textContent,
-          followUpAction: cells[5].textContent
-        };
-  
-        database.ref(`tableData/${rowId}`).update(updatedData);
-      }
-    }, true);
-  </script>
-  
-    
 </body>
 </html>

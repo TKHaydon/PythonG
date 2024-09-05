@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js"></script>
-
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style1.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PYTHON GAME TEST TABLE</title>
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js"></script>
 </head>
 <body>
     <table style="table-layout:fixed" id="testingtable" cellpadding="5" cellspacing="0" border="1" style="border-collapse: collapse; width: 100%;">
@@ -18,46 +19,76 @@
                 <th style="width: 25%" scope="col">Expected Result</th>
                 <th style="width: 25%" scope="col">Actual Result</th>
                 <th style="width: 10%" scope="col">Pass</th>
-                <th style="width: 10%" scope="col">Follow-up Action</th> 
+                <th style="width: 10%" scope="col">Follow-up Action</th>
+            </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td contenteditable="true">Describe the action here</td>
-                <td contenteditable="true">Enter the test data here</td>
-                <td contenteditable="true">Describe the expected result here</td>
-                <td contenteditable="true">Enter the actual result here</td>
-                <td contenteditable="true">Yes/No</td>
-                <td contenteditable="true">Describe follow-up action here</td>
-            </tr>
-            <tr>
-                <td contenteditable="true">Describe the action here</td>
-                <td contenteditable="true">Enter the test data here</td>
-                <td contenteditable="true">Describe the expected result here</td>
-                <td contenteditable="true">Enter the actual result here</td>
-                <td contenteditable="true">Yes/No</td>
-                <td contenteditable="true">Describe follow-up action here</td>
-            </tr>
+        <tbody id="table-body">
+            <!-- Rows will be populated dynamically -->
         </tbody>
     </table>
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-        // TODO: Add SDKs for Firebase products that you want to use
-        // https://firebase.google.com/docs/web/setup#available-libraries
-      
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-database.js";
+        
         // Your web app's Firebase configuration
         const firebaseConfig = {
-          apiKey: "AIzaSyAMo6sJ1cSccouQ0vgCR-EOpck3fQPLkc8",
-          authDomain: "the-abandoned-test-table.firebaseapp.com",
-          databaseURL: "https://the-abandoned-test-table-default-rtdb.europe-west1.firebasedatabase.app",
-          projectId: "the-abandoned-test-table",
-          storageBucket: "the-abandoned-test-table.appspot.com",
-          messagingSenderId: "616618224310",
-          appId: "1:616618224310:web:db548358ceab1f2b085417"
+            apiKey: "AIzaSyAMo6sJ1cSccouQ0vgCR-EOpck3fQPLkc8",
+            authDomain: "the-abandoned-test-table.firebaseapp.com",
+            databaseURL: "https://the-abandoned-test-table-default-rtdb.europe-west1.firebasedatabase.app",
+            projectId: "the-abandoned-test-table",
+            storageBucket: "the-abandoned-test-table.appspot.com",
+            messagingSenderId: "616618224310",
+            appId: "1:616618224310:web:db548358ceab1f2b085417"
         };
-      
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-      </script>
+        const database = getDatabase(app);
+        const tableRef = ref(database, 'testTable');
+
+        // Function to load data from Firebase
+        function loadTableData() {
+            onValue(tableRef, (snapshot) => {
+                const data = snapshot.val();
+                const tableBody = document.getElementById('table-body');
+                tableBody.innerHTML = '';
+
+                if (data) {
+                    Object.keys(data).forEach(key => {
+                        const row = data[key];
+                        const newRow = document.createElement('tr');
+                        Object.values(row).forEach(value => {
+                            const cell = document.createElement('td');
+                            cell.textContent = value;
+                            cell.contentEditable = 'true';
+                            newRow.appendChild(cell);
+                        });
+                        tableBody.appendChild(newRow);
+                    });
+                }
+            });
+        }
+
+        // Function to save data to Firebase
+        function saveTableData() {
+            const rows = document.getElementById('table-body').getElementsByTagName('tr');
+            const updates = {};
+            for (let i = 0; i < rows.length; i++) {
+                const cells = rows[i].getElementsByTagName('td');
+                const rowData = {};
+                for (let j = 0; j < cells.length; j++) {
+                    rowData[`column${j}`] = cells[j].textContent;
+                }
+                updates[`row${i}`] = rowData;
+            }
+            set(tableRef, updates);
+        }
+
+        // Load initial data
+        loadTableData();
+
+        // Save data when table is modified
+        document.getElementById('table-body').addEventListener('blur', saveTableData, true);
+    </script>
 </body>
 </html>

@@ -1,1 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style1.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PYTHON GAME TEST TABLE</title>
+</head>
+<body>
+    <table style="table-layout:fixed" id="testingtable" cellpadding="5" cellspacing="0" border="1" style="border-collapse: collapse; width: 100%;">
+        <thead>
+            <tr id="colhead">
+                <th style="width: 15%" scope="col">Action</th>
+                <th style="width: 15%" scope="col">Test Data</th>
+                <th style="width: 25%" scope="col">Expected Result</th>
+                <th style="width: 25%" scope="col">Actual Result</th>
+                <th style="width: 5%" scope="col">Pass</th>
+                <th style="width: 15%" scope="col">Follow-up Action</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Exit Game</td>
+                <td>"2"</td>
+                <td>Game exits</td>
+                <td>Game exits</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Character Selection</td>
+                <td>"1"</td>
+                <td>Player is set to Ronan</td>
+                <td>Player is set to Ronan</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Character Selection</td>
+                <td>"2"</td>
+                <td>Player is set to Julia</td>
+                <td>Player is set to Julia</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Character Selection</td>
+                <td>"3"</td>
+                <td>Player is set to Lee</td>
+                <td>Player is set to Lee</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Display Player Stats</td>
+                <td>"stats"</td>
+                <td>Displays player stats: Name, Health, Attack, Defence, Inventory</td>
+                <td>Displays player stats: Name, Health, Attack, Defence, Inventory</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Airlock</td>
+                <td>"move"</td>
+                <td>Moves to Airlock and displays its description</td>
+                <td>Moves to Airlock and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Cargohold</td>
+                <td>"move"</td>
+                <td>Moves to Cargohold and displays its description</td>
+                <td>Moves to Cargohold and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Armoury</td>
+                <td>"move"</td>
+                <td>Moves to Armoury and displays its description</td>
+                <td>Moves to Armoury and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Hallway</td>
+                <td>"move"</td>
+                <td>Moves to Hallway and displays its description</td>
+                <td>Moves to Hallway and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Medbay</td>
+                <td>"move"</td>
+                <td>Moves to Medbay and displays its description</td>
+                <td>Moves to Medbay and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Canteen/Crew Quarters</td>
+                <td>"move"</td>
+                <td>Moves to Canteen/Crew Quarters and displays its description</td>
+                <td>Moves to Canteen/Crew Quarters and displays its description</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Control Room</td>
+                <td>"move"</td>
+                <td>Moves to Control Room and checks for keycard requirement</td>
+                <td>Moves to Control Room and checks for keycard requirement</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Move to Unconnected Room</td>
+                <td>"move"</td>
+                <td>Displays error message that you can't move there</td>
+                <td>Displays error message that you can't move there</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Search Room with Items</td>
+                <td>"search"</td>
+                <td>Finds items and adds them to inventory</td>
+                <td>Finds items and adds them to inventory</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Search Room with Enemies</td>
+                <td>"search"</td>
+                <td>Encounters Enemy_1 and adds it to the room's enemies</td>
+                <td>Encounters Enemy_1 and adds it to the room's enemies</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Search Room with No Items/Enemies</td>
+                <td>"search"</td>
+                <td>Displays message "You find nothing."</td>
+                <td>Displays message "You find nothing."</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Attack Enemy</td>
+                <td>"attack"</td>
+                <td>Player attacks the enemy and reduces its health</td>
+                <td>Player attacks the enemy and reduces its health</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Use Medpack</td>
+                <td>"use" then select "Medpack"</td>
+                <td>Player's health is restored to 100</td>
+                <td>Player's health is restored to 100</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Equip Laser Pistol</td>
+                <td>"use" then select "Laser Pistol"</td>
+                <td>Player's attack increases by 20</td>
+                <td>Player's attack increases by 20</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Equip Armoured Vest</td>
+                <td>"use" then select "Armoured Vest"</td>
+                <td>Player's defence increases by 20</td>
+                <td>Player's defence increases by 20</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Equip Helmet</td>
+                <td>"use" then select "Helmet"</td>
+                <td>Player's defence increases by 5</td>
+                <td>Player's defence increases by 5</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Reload Weapon</td>
+                <td>"reload"</td>
+                <td>Laser Pistol (Loaded) is added to inventory</td>
+                <td>Laser Pistol (Loaded) is added to inventory</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Combine Keycard Fragments</td>
+                <td>"combine fragments"</td>
+                <td>If all fragments are present, combine them into Control Room Keycard</td>
+                <td>If all fragments are present, combine them into Control Room Keycard</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Try to Enter Control Room without Keycard</td>
+                <td>Command when keycard not in inventory</td>
+                <td>Displays message "You need a keycard to enter the Control Room"</td>
+                <td>Displays message "You need a keycard to enter the Control Room"</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Enter Control Room with Keycard</td>
+                <td>Command when keycard in inventory</td>
+                <td>Displays enemy boss stats and allows battle</td>
+                <td>Displays enemy boss stats and allows battle</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Display Map</td>
+                <td>"move"</td>
+                <td>Shows current room marked on the map</td>
+                <td>Shows current room marked on the map</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Help Type</td>
+                <td>"help"</td>
+                <td>Displays list of available types or commands</td>
+                <td>Displays list of available types or commands</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Invalid Type</td>
+                <td>Command with invalid type</td>
+                <td>Displays "Invalid Type."</td>
+                <td>Displays "Invalid Type."</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Reload with no ammo</td>
+                <td>"reload"</td>
+                <td>Displays "You don't have any ammo."</td>
+                <td>Displays "You don't have any ammo."</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Attempt to Use Unusable Item</td>
+                <td>"use" with unusable item</td>
+                <td>Displays "You can't use that item."</td>
+                <td>Displays "You can't use that item."</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Combine Fragments When Missing Some</td>
+                <td>"combine fragments"</td>
+                <td>Displays "One or more items are not in your inventory."</td>
+                <td>Displays "One or more items are not in your inventory."</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Check Player Health</td>
+                <td>Command to check player health</td>
+                <td>Displays player's current health</td>
+                <td>Displays player's current health</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Check Enemy Health</td>
+                <td>Command to check enemy health</td>
+                <td>Displays enemy's current health</td>
+                <td>Displays enemy's current health</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Check Player Death</td>
+                <td>Command to check if player is dead</td>
+                <td>Displays message when player’s health reaches 0</td>
+                <td>Displays message when player’s health reaches 0</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+            <tr>
+                <td>Check Enemy Death</td>
+                <td>Command to check if enemy is dead</td>
+                <td>Displays message when enemy’s health reaches 0</td>
+                <td>Displays message when enemy’s health reaches 0</td>
+                <td>Y</td>
+                <td>Enemy death check not tested</td>
+            </tr>
+            <tr>
+                <td>Incorrect Input</td>
+                <td>Any incorrect input</td>
+                <td>Displays "Invalid command" or "Invalid choice"</td>
+                <td>Displays "Invalid command" or "Invalid choice"</td>
+                <td>Y</td>
+                <td>N/A</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
 
